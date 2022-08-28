@@ -1,0 +1,54 @@
+﻿@page
+@using global::Chat.Core.Entities
+@using Microsoft.AspNetCore.Identity
+@model SignalRTieredDemo.Web.Pages.ChatModel
+@inject UserManager<ApplicationUser> UserManager
+
+@section Styles {
+    <link rel="stylesheet" href="@Url.Content("~/css/chat.css")"/>
+    <style type="text/css">
+     textarea {
+            overflow-y: scroll;
+            height: 100px;
+            resize: none; /* Remove this if you want the user to resize the textarea */
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://www.unpkg.com/@@aspnet/signalr@1.0.27/dist/browser/signalr.js"></script>
+    <script src="@Url.Content("~/js/chat.js")"></script>
+
+    <script>
+        loadInitialMessagesForUser('@HttpContext.User.Identity?.Name', 50);
+    </script>
+}
+
+<h1>Chat</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 form-group">
+            <div>All Messages:</div>
+            <ul id="MessageList" style="">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 form-group">
+            <label for="TargetUserName">Target UserName</label>
+            <input type="text" class="form-control" id="TargetUserName"  placeholder="Enter user name">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 form-group mt-2">
+            <label for="Message">Message</label>
+            <textarea class="form-control" id="Message" rows="3" placeholder="Enter message"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 form-group mt-2">
+            <button type="button" id="SendMessageButton" onclick="sendMessage('@HttpContext.User.Identity?.Name', this, event)"  class="btn btn-primary">Send!</button>
+        </div>
+    </div>
+</div>
